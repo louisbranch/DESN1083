@@ -1,8 +1,8 @@
-#game-wrapper div {
+#game-board div {
   clear: both;
 }
 
-#game-wrapper span {
+#game-board span {
   display: block;
   float: left;
   width: 15%;
@@ -14,7 +14,15 @@
   cursor: pointer;
 }
 
-#game-wrapper span:hover,
-#game-wrapper span:hover {
+#game-board span:hover,
+#game-board span:hover {
   background-color: blue;
+}
+
+#game-board span.frozen{
+  background-color: green;
+}
+
+#game-board span.active{
+  background-color: red;
 }

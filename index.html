@@ -4,12 +4,19 @@
     <link rel="stylesheet" href="css/main.css" type="text/css" />
   </head>
   <body>
-    <div id="game-wrapper"></div>
-    <script type="text/html" charset="utf-8" id="template-menu">
-      <ul>
-        <li>Start New Game</li>
-      </ul>
-    </script>
+    <section id="game-screen">
+      <header>
+        <div>
+          <strong>Score:</strong>
+          <span id="game-score">0</span>
+        </div>
+        <div>
+          <strong>Misses:</strong>
+          <span id="game-misses">0</span>
+        </div>
+      </header>
+      <div id="game-board"></div>
+    </section>
     <script type="text/javascript" charset="utf-8" src="js/main.js"></script>
   </body>
 </html>
