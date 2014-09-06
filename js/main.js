@@ -1,44 +1,99 @@
 (function () {
 
-  /* Game */
+  /* Mixin */
 
-  function Game(options) {
+  function mixin(giver, receiver) {
+    for (var method in giver.prototype) {
+      if (receiver.prototype[method]) return;
+      receiver.prototype[method] = giver.prototype[method];
+    }
+  }
+
+  /* Observer */
+
+  function Observer() { }
+
+  Observer.prototype.listeners = function (event) {
+    this._listeners = this._listeners || {};
+    this._listeners[event] = this._listeners[event] || [];
+    return this._listeners[event];
+  };
+
+  Observer.prototype.on = function (event, callback, context) {
+    this.listeners(event).push({callback: callback, context: context});
+  };
+
+  Observer.prototype.trigger = function (event) {
+    var args = [].slice.call(arguments, 1);
+    var listeners = this.listeners(event);
+    setTimeout(function () {
+      listeners.forEach(function (listener) {
+        listener.callback.apply(listener.context, args);
+      });
+    }, 0);
+  };
+
+  /* Match */
+
+  function Match(options) {
     // Default initialization;
     options = options || {};
     var width = options.width || 6;
     var height = options.height || 4;
 
-    this.score = 0;
+    this.guessed = 0;
+    this.points = 0;
     this.misses = 0;
+
     this.board = new Board(this, width, height);
   }
+  mixin(Observer, Match);
 
-  Game.prototype.render = function () {
-    this.el = document.querySelector("#game-screen");
-    this.el.querySelector("#game-board").appendChild(this.board.render());
+  Match.prototype.start = function () {
+    this.trigger("start");
   };
 
-  Game.prototype.increaseScore = function () {
-    this.elScore = this.elScore || this.el.querySelector("#game-score");
-    this.score += 1;
-    this.elScore.textContent = this.score;
+  Match.prototype.score = function () {
+    this.points += 1;
+    this.trigger("score", this.points);
   };
 
-  Game.prototype.increaseMiss = function () {
-    this.elMisses = this.elMisses || this.el.querySelector("#game-misses");
+  Match.prototype.miss = function () {
     this.misses += 1;
-    this.elMisses.textContent = this.misses;
+    this.trigger("miss", this.misses);
+  };
+
+  function MatchView(model) {
+    this.model = model;
+    this.model.on("start", this.render, this);
+    this.model.on("score", this.renderScore, this);
+    this.model.on("miss", this.renderMisses, this);
+  }
+
+  MatchView.prototype.render = function () {
+    this.board = new BoardView(this.model.board);
+    this.el = this.el || document.querySelector("#match-screen");
+    this.el.querySelector("#match-board").appendChild(this.board.render());
+  };
+
+  MatchView.prototype.renderScore = function (score) {
+    this.score = this.score || this.el.querySelector("#match-score");
+    this.score.textContent = score;
+  };
+
+  MatchView.prototype.renderMisses = function (misses) {
+    this.misses = this.misses || this.el.querySelector("#match-misses");
+    this.misses.textContent = misses;
   };
 
   /* Board */
 
-  function Board(game, width, height) {
-    this.game = game;
+  function Board(match, width, height) {
+    this.match = match;
     this.width = width;
     this.height = height;
-    this.assembleTiles();
-    this.tilesGuessed = 0;
-    this.tileSelected = null;
+    this.assemble();
+    this.selected = null;
   }
 
   Board.prototype.createTiles = function () {
@@ -53,7 +108,7 @@
     return tiles;
   };
 
-  Board.prototype.assembleTiles =  function () {
+  Board.prototype.assemble =  function () {
     var tiles = this.createTiles();
     var rows = [];
     for (var i = 0; i < this.height; i++) {
@@ -68,55 +123,82 @@
     this.tiles = rows;
   };
 
-  Board.prototype.render = function () {
+  Board.prototype.select = function (tile) {
+    if (!this.selected) {
+      this.selected = tile;
+      return;
+    }
+    if (this.selected === tile) return;
+    this.compare(this.selected, tile);
+    this.selected = null;
+  };
+
+  Board.prototype.compare = function (tileA, tileB) {
+    if (tileA.id === tileB.id) {
+      this.match.score();
+      tileA.lock();
+      tileB.lock();
+    } else {
+      this.match.miss();
+      tileA.hide();
+      tileB.hide();
+    }
+  };
+
+  function BoardView(model) {
+    this.model = model;
+  }
+
+  BoardView.prototype.render = function () {
     var el = document.createDocumentFragment();
-    this.tiles.forEach(function (row) {
+    this.model.tiles.forEach(function (row) {
       var column = document.createElement("div");
       row.forEach(function (tile) {
-        column.appendChild(tile.render());
+        var view = new TileView(tile);
+        column.appendChild(view.render());
       });
       el.appendChild(column);
     });
     return el;
   };
 
-  Board.prototype.selectTile = function (tile) {
-    if (!this.tileSelected) return this.tileSelected = tile;
-    if (this.tileSelected === tile) return;
-    this.compareTiles(this.tileSelected, tile);
-    this.tileSelected = null;
-  };
-
-  Board.prototype.compareTiles = function (a, b) {
-    if (a.id === b.id) {
-      this.game.increaseScore();
-      a.freeze();
-      b.freeze();
-    } else {
-      this.game.increaseMiss();
-      a.hide();
-      b.hide();
-    }
-  };
-
   function Tile(board, id) {
     this.board = board;
     this.id = id;
   }
+  mixin(Observer, Tile);
 
-  Tile.prototype.render = function () {
-    this.el = document.createElement("span");
-    this.el.onclick = this.show.bind(this);
-    return this.el;
+  Tile.prototype.select = function () {
+    this.board.select(this);
   };
 
-  Tile.prototype.show = function () {
-    this.el.textContent = this.id;
-    this.el.className = "active";
-    this.board.selectTile(this);
+  Tile.prototype.lock = function () {
+    this.trigger("lock");
   };
 
   Tile.prototype.hide = function () {
+    this.trigger("hide");
+  };
+
+  function TileView(model) {
+    this.model = model;
+    this.model.on("lock", this.freeze, this);
+    this.model.on("hide", this.flipDown, this);
+  }
+
+  TileView.prototype.render = function () {
+    this.el = document.createElement("span");
+    this.el.onclick = this.flipUp.bind(this);
+    return this.el;
+  };
+
+  TileView.prototype.flipUp = function () {
+    this.el.textContent = this.model.id;
+    this.el.className = "active";
+    this.model.select();
+  };
+
+  TileView.prototype.flipDown = function () {
     var el = this.el;
     setTimeout(function () {
       el.textContent = "";
@@ -124,14 +206,15 @@
     }, 500);
   };
 
-  Tile.prototype.freeze = function () {
+  TileView.prototype.freeze = function () {
     this.el.className = "frozen";
     this.el.onclick = null;
   };
 
-  /* Initializing game */
+  /* Initializing match */
 
-  var game = new Game();
-  game.render();
+  var match = new Match();
+  var view = new MatchView(match);
+  match.start();
 
 }());

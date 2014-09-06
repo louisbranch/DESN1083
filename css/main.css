@@ -1,8 +1,8 @@
-#game-board div {
+#match-board div {
   clear: both;
 }
 
-#game-board span {
+#match-board span {
   display: block;
   float: left;
   width: 15%;
@@ -14,15 +14,15 @@
   cursor: pointer;
 }
 
-#game-board span:hover,
-#game-board span:hover {
+#match-board span:hover,
+#match-board span:hover {
   background-color: blue;
 }
 
-#game-board span.frozen{
+#match-board span.frozen{
   background-color: green;
 }
 
-#game-board span.active{
+#match-board span.active{
   background-color: red;
 }
