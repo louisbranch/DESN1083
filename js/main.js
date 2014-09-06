@@ -1,6 +1,10 @@
-(function () {
+;(function () {
 
-  /* Mixin */
+  /* Mixin helper
+   *
+   * Adds methods from one prototype to the other
+   *
+   */
 
   function mixin(giver, receiver) {
     for (var method in giver.prototype) {
@@ -41,7 +45,6 @@
     var width = options.width || 6;
     var height = options.height || 4;
 
-    this.guessed = 0;
     this.points = 0;
     this.misses = 0;
 
@@ -50,7 +53,12 @@
   mixin(Observer, Match);
 
   Match.prototype.start = function () {
+    this.timer = new Timer();
     this.trigger("start");
+  };
+
+  Match.prototype.end = function () {
+    this.trigger("end");
   };
 
   Match.prototype.score = function () {
@@ -63,9 +71,12 @@
     this.trigger("miss", this.misses);
   };
 
+  /* Match View */
+
   function MatchView(model) {
     this.model = model;
     this.model.on("start", this.render, this);
+    this.model.on("end", this.stopTimer, this);
     this.model.on("score", this.renderScore, this);
     this.model.on("miss", this.renderMisses, this);
   }
@@ -74,6 +85,7 @@
     this.board = new BoardView(this.model.board);
     this.el = this.el || document.querySelector("#match-screen");
     this.el.querySelector("#match-board").appendChild(this.board.render());
+    this.updateTimer();
   };
 
   MatchView.prototype.renderScore = function (score) {
@@ -86,21 +98,33 @@
     this.misses.textContent = misses;
   };
 
+  MatchView.prototype.updateTimer = function () {
+    var el = this.el.querySelector("#match-timer");
+    var clock = this.model.timer;
+    this.timer = setInterval(function () {
+      el.textContent = clock.timeSpent();
+    }, 500);
+  };
+
+  MatchView.prototype.stopTimer = function () {
+    clearInterval(this.timer);
+  };
+
   /* Board */
 
   function Board(match, width, height) {
     this.match = match;
     this.width = width;
     this.height = height;
-    this.assemble();
     this.selected = null;
+    this.needed = (this.width * this.height) / 2;
+    this.guessed = 0;
+    this.assemble();
   }
 
   Board.prototype.createTiles = function () {
-    var tilesNeeded = (this.width * this.height) / 2;
     var tiles = [];
-
-    for (var i = 0; i < tilesNeeded; i++) {
+    for (var i = 0; i < this.needed; i++) {
       // Created two of each tile
       tiles.push(new Tile(this, i));
       tiles.push(new Tile(this, i));
@@ -134,16 +158,28 @@
   };
 
   Board.prototype.compare = function (tileA, tileB) {
-    if (tileA.id === tileB.id) {
-      this.match.score();
-      tileA.lock();
-      tileB.lock();
-    } else {
-      this.match.miss();
-      tileA.hide();
-      tileB.hide();
-    }
+    var tiles = [tileA, tileB];
+    if (tileA.id === tileB.id) this.hit(tiles);
+    else this.miss(tiles);
   };
+
+  Board.prototype.hit = function (tiles) {
+    this.match.score();
+    tiles.forEach(function (tile) {
+      tile.lock();
+    });
+    this.guessed += 1;
+    if (this.guessed === this.needed) this.match.end();
+  };
+
+  Board.prototype.miss = function (tiles) {
+    this.match.miss();
+    tiles.forEach(function (tile) {
+      tile.hide();
+    });
+  };
+
+  /* Board View */
 
   function BoardView(model) {
     this.model = model;
@@ -180,6 +216,8 @@
     this.trigger("hide");
   };
 
+  /* Tile View */
+
   function TileView(model) {
     this.model = model;
     this.model.on("lock", this.freeze, this);
@@ -209,6 +247,25 @@
   TileView.prototype.freeze = function () {
     this.el.className = "frozen";
     this.el.onclick = null;
+  };
+
+  /* Timer */
+
+  function Timer() {
+    this.start = this.now();
+  }
+
+  Timer.prototype.now = function () {
+    return new Date().getTime();
+  };
+
+  Timer.prototype.timeSpent = function () {
+    var time = (this.now() - this.start) / 1000;
+    var mins = Math.floor(time / 60);
+    var secs = Math.floor(time % 60);
+    if (mins < 10) mins = "0" + mins;
+    if (secs < 10) secs = "0" + secs;
+    return mins + ":" + secs;
   };
 
   /* Initializing match */
