@@ -40,7 +40,11 @@
   /* Game Model */
 
   function Game() {
-    this.modes = {easy: {width: 6, height: 4}};
+    this.modes = {
+      easy: {width: 4, height: 3},
+      medium: {width: 6, height: 4},
+      hard: {width: 8, height: 5},
+    };
     this.matches = 0;
   }
   mixin(Observer, Game);
@@ -66,6 +70,7 @@
     this.bindClick("match", this.startMatch);
     this.bindClick("rules", this.renderRules);
     this.bindClick("about", this.renderAbout);
+    this.bindClick("quit", this.renderQuit);
   };
 
   GameView.prototype.startMatch = function () {
@@ -97,6 +102,10 @@
   };
 
   GameView.prototype.renderAbout = function () {
+    //TODO
+  };
+
+  GameView.prototype.renderQuit = function () {
     //TODO
   };
 
@@ -242,7 +251,7 @@
 
   BoardView.prototype.render = function () {
     var el = this.el = document.querySelector("#match-board");
-    this.el.className = "theme-" + this.model.theme;
+    this.el.className = this.classes();
     this.model.tiles.forEach(function (row) {
       var column = document.createElement("div");
       row.forEach(function (tile) {
@@ -251,6 +260,12 @@
       });
       el.appendChild(column);
     });
+  };
+
+  BoardView.prototype.classes = function () {
+    return "theme-" + this.model.theme +
+           " size-" + this.model.width +
+           "x" + this.model.height;
   };
 
   function Tile(board, id) {
