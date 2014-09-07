@@ -1,0 +1,159 @@
+.theme-pokemon .tile {
+  height: 127px;
+  width: 127px;
+}
+
+.theme-pokemon [class*="tile-"] {
+  background-image: url('/imgs/pokemon1.png');
+}
+
+.theme-pokemon .tile-1  { background-position: 0 0; }
+.theme-pokemon .tile-2  { background-position: -127px 0;      }
+.theme-pokemon .tile-3  { background-position: -254px 0;      }
+.theme-pokemon .tile-4  { background-position: -381px 0;      }
+.theme-pokemon .tile-5  { background-position: -508px 0;      }
+.theme-pokemon .tile-6  { background-position: 0      -127px; }
+.theme-pokemon .tile-7  { background-position: -127px -127px; }
+.theme-pokemon .tile-8  { background-position: -254px -127px; }
+.theme-pokemon .tile-9  { background-position: -381px -127px; }
+.theme-pokemon .tile-10 { background-position: -508px -127px; }
+.theme-pokemon .tile-11 { background-position: 0      -254px; }
+.theme-pokemon .tile-12 { background-position: -127px -254px; }
+.theme-pokemon .tile-13 { background-position: -254px -254px; }
+.theme-pokemon .tile-14 { background-position: -381px -254px; }
+.theme-pokemon .tile-15 { background-position: -508px -254px; }
+.theme-pokemon .tile-16 { background-position: 0      -381px; }
+.theme-pokemon .tile-17 { background-position: -127px -381px; }
+.theme-pokemon .tile-18 { background-position: -254px -381px; }
+.theme-pokemon .tile-19 { background-position: -381px -381px; }
+.theme-pokemon .tile-20 { background-position: -508px -381px; }
+.theme-pokemon .tile-21 { background-position: 0      -508px; }
+.theme-pokemon .tile-22 { background-position: -127px -508px; }
+.theme-pokemon .tile-23 { background-position: -254px -508px; }
+.theme-pokemon .tile-24 { background-position: -381px -508px; }
+.theme-pokemon .tile-25 { background-position: -508px -508px; }
+.theme-pokemon .tile-26 { background-position: 0      -635px; }
+.theme-pokemon .tile-27 { background-position: -127px -635px; }
+.theme-pokemon .tile-28 { background-position: -254px -635px; }
+.theme-pokemon .tile-29 { background-position: -381px -635px; }
+.theme-pokemon .tile-30 { background-position: -508px -635px; }
+.theme-pokemon .tile-31 { background-position: 0      -762px; }
+.theme-pokemon .tile-32 { background-position: -127px -762px; }
+.theme-pokemon .tile-33 { background-position: -254px -762px; }
+.theme-pokemon .tile-34 { background-position: -381px -762px; }
+.theme-pokemon .tile-35 { background-position: -508px -762px; }
+.theme-pokemon .tile-36 { background-position: 0      -889px; }
+.theme-pokemon .tile-37 { background-position: -127px -889px; }
+.theme-pokemon .tile-38 { background-position: -254px -889px; }
+.theme-pokemon .tile-39 { background-position: -381px -889px; }
+.theme-pokemon .tile-40 { background-position: -508px -889px; }
+.theme-pokemon .tile-41 { background-position: 0      -1016px; }
+.theme-pokemon .tile-42 { background-position: -127px -1016px; }
+.theme-pokemon .tile-43 { background-position: -254px -1016px; }
+.theme-pokemon .tile-44 { background-position: -381px -1016px; }
+.theme-pokemon .tile-45 { background-position: -508px -1016px; }
+.theme-pokemon .tile-46 { background-position: 0      -1143px; }
+.theme-pokemon .tile-47 { background-position: -127px -1143px; }
+.theme-pokemon .tile-48 { background-position: -254px -1143px; }
+.theme-pokemon .tile-49 { background-position: -381px -1143px; }
+.theme-pokemon .tile-50 { background-position: -508px -1143px; }
+.theme-pokemon .tile-51 { background-image: url("/imgs/pokemon2.png"); background-position: 0 0; }
+.theme-pokemon .tile-52 { background-image: url("/imgs/pokemon2.png"); background-position: -127px 0;      }
+.theme-pokemon .tile-53 { background-image: url("/imgs/pokemon2.png"); background-position: -254px 0;      }
+.theme-pokemon .tile-54 { background-image: url("/imgs/pokemon2.png"); background-position: -381px 0;      }
+.theme-pokemon .tile-55 { background-image: url("/imgs/pokemon2.png"); background-position: -508px 0;      }
+.theme-pokemon .tile-56 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -127px; }
+.theme-pokemon .tile-57 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -127px; }
+.theme-pokemon .tile-58 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -127px; }
+.theme-pokemon .tile-59 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -127px; }
+.theme-pokemon .tile-60 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -127px; }
+.theme-pokemon .tile-61 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -254px; }
+.theme-pokemon .tile-62 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -254px; }
+.theme-pokemon .tile-63 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -254px; }
+.theme-pokemon .tile-64 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -254px; }
+.theme-pokemon .tile-65 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -254px; }
+.theme-pokemon .tile-66 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -381px; }
+.theme-pokemon .tile-67 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -381px; }
+.theme-pokemon .tile-68 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -381px; }
+.theme-pokemon .tile-69 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -381px; }
+.theme-pokemon .tile-70 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -381px; }
+.theme-pokemon .tile-71 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -508px; }
+.theme-pokemon .tile-72 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -508px; }
+.theme-pokemon .tile-73 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -508px; }
+.theme-pokemon .tile-74 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -508px; }
+.theme-pokemon .tile-75 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -508px; }
+.theme-pokemon .tile-76 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -635px; }
+.theme-pokemon .tile-77 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -635px; }
+.theme-pokemon .tile-78 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -635px; }
+.theme-pokemon .tile-79 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -635px; }
+.theme-pokemon .tile-80 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -635px; }
+.theme-pokemon .tile-81 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -762px; }
+.theme-pokemon .tile-82 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -762px; }
+.theme-pokemon .tile-83 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -762px; }
+.theme-pokemon .tile-84 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -762px; }
+.theme-pokemon .tile-85 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -762px; }
+.theme-pokemon .tile-86 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -889px; }
+.theme-pokemon .tile-87 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -889px; }
+.theme-pokemon .tile-88 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -889px; }
+.theme-pokemon .tile-89 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -889px; }
+.theme-pokemon .tile-90 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -889px; }
+.theme-pokemon .tile-91 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -1016px; }
+.theme-pokemon .tile-92 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -1016px; }
+.theme-pokemon .tile-93 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -1016px; }
+.theme-pokemon .tile-94 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -1016px; }
+.theme-pokemon .tile-95 { background-image: url("/imgs/pokemon2.png"); background-position: -508px -1016px; }
+.theme-pokemon .tile-96 { background-image: url("/imgs/pokemon2.png"); background-position: 0      -1143px; }
+.theme-pokemon .tile-97 { background-image: url("/imgs/pokemon2.png"); background-position: -127px -1143px; }
+.theme-pokemon .tile-98 { background-image: url("/imgs/pokemon2.png"); background-position: -254px -1143px; }
+.theme-pokemon .tile-99 { background-image: url("/imgs/pokemon2.png"); background-position: -381px -1143px; }
+.theme-pokemon .tile-100 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -1143px; }
+.theme-pokemon .tile-101 { background-image: url("/imgs/pokemon3.png"); background-position: 0 0; }
+.theme-pokemon .tile-102 { background-image: url("/imgs/pokemon3.png"); background-position: -127px 0;      }
+.theme-pokemon .tile-103 { background-image: url("/imgs/pokemon3.png"); background-position: -254px 0;      }
+.theme-pokemon .tile-104 { background-image: url("/imgs/pokemon3.png"); background-position: -381px 0;      }
+.theme-pokemon .tile-105 { background-image: url("/imgs/pokemon3.png"); background-position: -508px 0;      }
+.theme-pokemon .tile-106 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -127px; }
+.theme-pokemon .tile-107 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -127px; }
+.theme-pokemon .tile-108 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -127px; }
+.theme-pokemon .tile-109 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -127px; }
+.theme-pokemon .tile-110 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -127px; }
+.theme-pokemon .tile-111 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -254px; }
+.theme-pokemon .tile-112 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -254px; }
+.theme-pokemon .tile-113 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -254px; }
+.theme-pokemon .tile-114 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -254px; }
+.theme-pokemon .tile-115 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -254px; }
+.theme-pokemon .tile-116 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -381px; }
+.theme-pokemon .tile-117 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -381px; }
+.theme-pokemon .tile-118 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -381px; }
+.theme-pokemon .tile-119 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -381px; }
+.theme-pokemon .tile-120 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -381px; }
+.theme-pokemon .tile-121 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -508px; }
+.theme-pokemon .tile-122 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -508px; }
+.theme-pokemon .tile-123 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -508px; }
+.theme-pokemon .tile-124 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -508px; }
+.theme-pokemon .tile-125 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -508px; }
+.theme-pokemon .tile-126 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -635px; }
+.theme-pokemon .tile-127 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -635px; }
+.theme-pokemon .tile-128 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -635px; }
+.theme-pokemon .tile-129 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -635px; }
+.theme-pokemon .tile-130 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -635px; }
+.theme-pokemon .tile-131 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -762px; }
+.theme-pokemon .tile-132 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -762px; }
+.theme-pokemon .tile-133 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -762px; }
+.theme-pokemon .tile-134 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -762px; }
+.theme-pokemon .tile-135 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -762px; }
+.theme-pokemon .tile-136 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -889px; }
+.theme-pokemon .tile-137 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -889px; }
+.theme-pokemon .tile-138 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -889px; }
+.theme-pokemon .tile-139 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -889px; }
+.theme-pokemon .tile-140 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -889px; }
+.theme-pokemon .tile-141 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -1016px; }
+.theme-pokemon .tile-142 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -1016px; }
+.theme-pokemon .tile-143 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -1016px; }
+.theme-pokemon .tile-144 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -1016px; }
+.theme-pokemon .tile-145 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -1016px; }
+.theme-pokemon .tile-146 { background-image: url("/imgs/pokemon3.png"); background-position: 0      -1143px; }
+.theme-pokemon .tile-147 { background-image: url("/imgs/pokemon3.png"); background-position: -127px -1143px; }
+.theme-pokemon .tile-148 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -1143px; }
+.theme-pokemon .tile-149 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -1143px; }
+.theme-pokemon .tile-150 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -1143px; }

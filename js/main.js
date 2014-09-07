@@ -45,6 +45,7 @@
       medium: {width: 6, height: 4},
       hard: {width: 8, height: 5},
     };
+    this.themes = [ {name: "pokemon", maxTiles: 150} ];
     this.matches = 0;
   }
   mixin(Observer, Game);
@@ -52,11 +53,18 @@
   Game.prototype.start = function (mode, theme) {
     var options = {
       size: this.modes[mode],
-      theme: theme
+      theme: this.findTheme(theme)
     };
     this.matches += 1;
     var match = new Match(this, options);
     game.trigger("start", match);
+  };
+
+  Game.prototype.findTheme = function (name) {
+    var themes = this.themes.filter(function (theme) {
+      return theme.name === name;
+    });
+    return themes[0];
   };
 
   /* Game View */
@@ -187,12 +195,14 @@
   }
 
   Board.prototype.createTiles = function () {
+    var board = this;
+    var ids = this.getRandomTileIds();
     var tiles = [];
-    for (var i = 0; i < this.needed; i++) {
+    ids.forEach(function (id) {
       // Created two of each tile
-      tiles.push(new Tile(this, i));
-      tiles.push(new Tile(this, i));
-    }
+      tiles.push(new Tile(board, id));
+      tiles.push(new Tile(board, id));
+    });
     return tiles;
   };
 
@@ -202,13 +212,27 @@
     for (var i = 0; i < this.height; i++) {
       var columns = [];
       for (var j = 0; j < this.width; j++) {
-        var rnd = Math.floor(Math.random() * tiles.length);
+        var rnd = this.random(tiles.length);
         var tile = tiles.splice(rnd, 1);
         columns.push(tile[0]);
       }
       rows.push(columns);
     }
     this.tiles = rows;
+  };
+
+  Board.prototype.random = function (max) {
+    return Math.floor(Math.random() * max);
+  };
+
+  Board.prototype.getRandomTileIds = function () {
+    var max = this.theme.maxTiles;
+    var ids = [];
+    while (ids.length < this.needed) {
+      var rnd = this.random(max) + 1;
+      if (ids.indexOf(rnd) === -1) ids.push(rnd);
+    }
+    return ids;
   };
 
   Board.prototype.select = function (tile) {
@@ -252,18 +276,19 @@
   BoardView.prototype.render = function () {
     var el = this.el = document.querySelector("#match-board");
     this.el.className = this.classes();
-    this.model.tiles.forEach(function (row) {
-      var column = document.createElement("div");
-      row.forEach(function (tile) {
+    this.model.tiles.forEach(function (column) {
+      var row = document.createElement("div");
+      row.className = "board-row";
+      column.forEach(function (tile) {
         var view = new TileView(tile);
-        column.appendChild(view.render());
+        row.appendChild(view.render());
       });
-      el.appendChild(column);
+      el.appendChild(row);
     });
   };
 
   BoardView.prototype.classes = function () {
-    return "theme-" + this.model.theme +
+    return "theme-" + this.model.theme.name +
            " size-" + this.model.width +
            "x" + this.model.height;
   };
@@ -295,29 +320,28 @@
   }
 
   TileView.prototype.render = function () {
-    this.el = document.createElement("span");
+    this.el = document.createElement("div");
+    this.el.className = "tile";
     this.el.onclick = this.flipUp.bind(this);
     return this.el;
   };
 
   TileView.prototype.flipUp = function () {
     var id = this.model.id;
-    this.el.textContent = id
-    this.el.className = "tile-" + id + " active";
+    this.el.className = "tile tile-" + id + " active";
     this.model.select();
   };
 
   TileView.prototype.flipDown = function () {
     var el = this.el;
     setTimeout(function () {
-      el.textContent = "";
-      el.className = "";
+      el.className = "tile";
     }, 500);
   };
 
   TileView.prototype.freeze = function () {
     var id = this.model.id;
-    this.el.className = "tile-" + id + " frozen";
+    this.el.className = "tile tile-" + id + " frozen";
     this.el.onclick = null;
   };
 
