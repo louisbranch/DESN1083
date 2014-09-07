@@ -13,7 +13,7 @@
     }
   }
 
-  /* Observer */
+  /* Observer pattern */
 
   function Observer() { }
 
@@ -37,25 +37,79 @@
     }, 0);
   };
 
-  /* Match */
+  /* Game Model */
 
-  function Match(options) {
-    // Default initialization;
-    options = options || {};
-    var width = options.width || 6;
-    var height = options.height || 4;
+  function Game() {
+    this.modes = {easy: {width: 6, height: 4}};
+    this.matches = 0;
+  }
+  mixin(Observer, Game);
 
+  Game.prototype.start = function (mode, theme) {
+    var options = {
+      size: this.modes[mode],
+      theme: theme
+    };
+    this.matches += 1;
+    var match = new Match(this, options);
+    game.trigger("start", match);
+  };
+
+  /* Game View */
+  function GameView(model) {
+    this.model = model;
+    this.model.on("start", this.renderMatch, this);
+  }
+
+  GameView.prototype.render = function () {
+    this.el = this.el || document.querySelector("#game-menu");
+    this.bindClick("match", this.startMatch);
+    this.bindClick("rules", this.renderRules);
+    this.bindClick("about", this.renderAbout);
+  };
+
+  GameView.prototype.startMatch = function () {
+    var mode = this.el.querySelector("#game-mode").value;
+    var theme = this.el.querySelector("#game-theme").value;
+    this.model.start(mode, theme);
+  };
+
+  GameView.prototype.bindClick = function (item, fn) {
+    this.el.querySelector("#game-menu-" + item).onclick = fn.bind(this);
+  };
+
+  GameView.prototype.renderMatch = function (match) {
+    this.hideMenu();
+    var view = new MatchView(match);
+    view.render();
+  };
+
+  GameView.prototype.hideMenu = function () {
+    this.el.className = "hidden";
+  };
+
+  GameView.prototype.showMenu = function () {
+    this.el.className = "";
+  };
+
+  GameView.prototype.renderRules = function () {
+    //TODO
+  };
+
+  GameView.prototype.renderAbout = function () {
+    //TODO
+  };
+
+  /* Match Model */
+
+  function Match(game, options) {
+    this.game = game;
+    this.timer = new Timer();
     this.points = 0;
     this.misses = 0;
-
-    this.board = new Board(this, width, height);
+    this.board = new Board(this, options);
   }
   mixin(Observer, Match);
-
-  Match.prototype.start = function () {
-    this.timer = new Timer();
-    this.trigger("start");
-  };
 
   Match.prototype.end = function () {
     this.trigger("end");
@@ -75,7 +129,6 @@
 
   function MatchView(model) {
     this.model = model;
-    this.model.on("start", this.render, this);
     this.model.on("end", this.stopTimer, this);
     this.model.on("score", this.renderScore, this);
     this.model.on("miss", this.renderMisses, this);
@@ -83,8 +136,9 @@
 
   MatchView.prototype.render = function () {
     this.board = new BoardView(this.model.board);
-    this.el = this.el || document.querySelector("#match-screen");
-    this.el.querySelector("#match-board").appendChild(this.board.render());
+    this.el = document.querySelector("#match-screen");
+    this.board.render();
+    this.el.className = "";
     this.updateTimer();
   };
 
@@ -110,12 +164,13 @@
     clearInterval(this.timer);
   };
 
-  /* Board */
+  /* Board Model */
 
-  function Board(match, width, height) {
+  function Board(match, options) {
     this.match = match;
-    this.width = width;
-    this.height = height;
+    this.width = options.size.width;
+    this.height = options.size.height;
+    this.theme = options.theme;
     this.selected = null;
     this.needed = (this.width * this.height) / 2;
     this.guessed = 0;
@@ -186,7 +241,8 @@
   }
 
   BoardView.prototype.render = function () {
-    var el = document.createDocumentFragment();
+    var el = this.el = document.querySelector("#match-board");
+    this.el.className = "theme-" + this.model.theme;
     this.model.tiles.forEach(function (row) {
       var column = document.createElement("div");
       row.forEach(function (tile) {
@@ -195,7 +251,6 @@
       });
       el.appendChild(column);
     });
-    return el;
   };
 
   function Tile(board, id) {
@@ -231,8 +286,9 @@
   };
 
   TileView.prototype.flipUp = function () {
-    this.el.textContent = this.model.id;
-    this.el.className = "active";
+    var id = this.model.id;
+    this.el.textContent = id
+    this.el.className = "tile-" + id + " active";
     this.model.select();
   };
 
@@ -245,11 +301,12 @@
   };
 
   TileView.prototype.freeze = function () {
-    this.el.className = "frozen";
+    var id = this.model.id;
+    this.el.className = "tile-" + id + " frozen";
     this.el.onclick = null;
   };
 
-  /* Timer */
+  /* Timer Model */
 
   function Timer() {
     this.start = this.now();
@@ -268,10 +325,10 @@
     return mins + ":" + secs;
   };
 
-  /* Initializing match */
+  /* Initializing Game */
 
-  var match = new Match();
-  var view = new MatchView(match);
-  match.start();
+  var game = new Game();
+  var view = new GameView(game);
+  view.render();
 
 }());

@@ -4,7 +4,26 @@
     <link rel="stylesheet" href="css/main.css" type="text/css" />
   </head>
   <body>
-    <section id="match-screen">
+    <h1>Memory Game</h1>
+    <section id="game-menu">
+      <div>
+        <h2>New Match</h2>
+        <select name="game-mode" id="game-mode">
+          <option value="easy" selected>Easy</option>
+          <option value="medium" disabled>Medium</option>
+          <option value="hard" disabled>Hard</option>
+        </select>
+        <select name="game-theme" id="game-theme">
+          <option value="pokemon" selected>Pokémon</option>
+        </select>
+        <button id="game-menu-match">New Match</button>
+      </div>
+      <ul>
+        <li><a href="#" id="game-menu-rules">Rules</a></li>
+        <li><a href="#" id="game-menu-about">About</a></li>
+      </ul>
+    </section>
+    <section id="match-screen" class="hidden">
       <header>
         <div>
           <strong>Score:</strong>
