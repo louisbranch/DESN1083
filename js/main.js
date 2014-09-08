@@ -41,9 +41,9 @@
 
   function Game() {
     this.modes = {
-      easy: {width: 6, height: 2},
-      medium: {width: 6, height: 4},
-      hard: {width: 6, height: 8},
+      easy: {width: 6, height: 4},
+      medium: {width: 6, height: 5},
+      hard: {width: 6, height: 6},
     };
     this.themes = [ {name: "pokemon", maxTiles: 151} ];
     this.matches = 0;
@@ -51,6 +51,8 @@
   mixin(Observer, Game);
 
   Game.prototype.start = function (mode, theme) {
+    mode = mode || "easy";
+    theme = theme || "pokemon";
     var options = {
       size: this.modes[mode],
       theme: this.findTheme(theme)
@@ -75,20 +77,20 @@
 
   GameView.prototype.render = function () {
     this.el = this.el || document.querySelector("#game-menu");
-    this.bindClick("match", this.startMatch);
-    this.bindClick("rules", this.renderRules);
-    this.bindClick("about", this.renderAbout);
-    this.bindClick("quit", this.renderQuit);
+    this.el.querySelector("#game-menu-options")
+      .onclick = this.startMatch.bind(this);
+    this.el.querySelector("#game-menu-quit")
+      .onclick = this.closeGame;
   };
 
-  GameView.prototype.startMatch = function () {
-    var mode = this.el.querySelector("#game-mode").value;
-    var theme = this.el.querySelector("#game-theme").value;
-    this.model.start(mode, theme);
+  GameView.prototype.startMatch = function (event) {
+    var mode = event.target.dataset.mode;
+    this.model.start(mode);
+    return false;
   };
 
-  GameView.prototype.bindClick = function (item, fn) {
-    this.el.querySelector("#game-menu-" + item).onclick = fn.bind(this);
+  GameView.prototype.closeGame = function () {
+    window.open("http://www.georgebrown.ca/", "_self");
   };
 
   GameView.prototype.renderMatch = function (match) {
@@ -105,23 +107,12 @@
     this.el.className = "";
   };
 
-  GameView.prototype.renderRules = function () {
-    //TODO
-  };
-
-  GameView.prototype.renderAbout = function () {
-    //TODO
-  };
-
-  GameView.prototype.renderQuit = function () {
-    //TODO
-  };
-
   /* Match Model */
 
   function Match(game, options) {
     this.game = game;
     this.timer = new Timer();
+    this.hits = 0;
     this.points = 0;
     this.misses = 0;
     this.board = new Board(this, options);
@@ -133,7 +124,8 @@
   };
 
   Match.prototype.score = function () {
-    this.points += 1;
+    this.hits += 1;
+    this.points += Math.floor((this.hits * 1000) / this.timer.ellapsed());
     this.trigger("score", this.points);
   };
 
@@ -173,7 +165,7 @@
     var el = this.el.querySelector("#match-timer");
     var clock = this.model.timer;
     this.timer = setInterval(function () {
-      el.textContent = clock.timeSpent();
+      el.textContent = clock.toString();
     }, 500);
   };
 
@@ -254,7 +246,7 @@
   Board.prototype.hit = function (tiles) {
     this.match.score();
     tiles.forEach(function (tile) {
-      tile.lock();
+      tile.match();
     });
     this.guessed += 1;
     if (this.guessed === this.needed) this.match.end();
@@ -303,8 +295,8 @@
     this.board.select(this);
   };
 
-  Tile.prototype.lock = function () {
-    this.trigger("lock");
+  Tile.prototype.match = function () {
+    this.trigger("match");
   };
 
   Tile.prototype.hide = function () {
@@ -315,7 +307,7 @@
 
   function TileView(model) {
     this.model = model;
-    this.model.on("lock", this.freeze, this);
+    this.model.on("match", this.match, this);
     this.model.on("hide", this.flipDown, this);
   }
 
@@ -339,7 +331,7 @@
     }, 500);
   };
 
-  TileView.prototype.freeze = function () {
+  TileView.prototype.match = function () {
     var id = this.model.id;
     this.el.className = "tile tile-" + id + " frozen";
     this.el.onclick = null;
@@ -355,8 +347,12 @@
     return new Date().getTime();
   };
 
-  Timer.prototype.timeSpent = function () {
-    var time = (this.now() - this.start) / 1000;
+  Timer.prototype.ellapsed = function () {
+    return (this.now() - this.start) / 1000;
+  };
+
+  Timer.prototype.toString = function () {
+    var time = this.ellapsed();
     var mins = Math.floor(time / 60);
     var secs = Math.floor(time % 60);
     if (mins < 10) mins = "0" + mins;

@@ -9,24 +9,22 @@
     <div class="wrapper">
       <h1>Memory Game</h1>
       <section id="game-menu">
-        <div>
-          <select name="game-mode" id="game-mode">
-            <option value="easy">Easy</option>
-            <option value="medium" selected>Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-          <select name="game-theme" id="game-theme">
-            <option value="pokemon" selected>Pokémon</option>
-          </select>
-          <button id="game-menu-match">New Match</button>
+        <div id="game-menu-match">
+          <h2>New Match</h2>
+          <div id="game-menu-options">
+            <a href="#" class="btn" data-mode="easy">Easy</a>
+            <a href="#" class="btn" data-mode="medium">Medium</a>
+            <a href="#" class="btn" data-mode="hard">Hard</a>
+          </div>
         </div>
+        <a href="rules.html" class="btn">How to Play</a>
+        <a href="#" id="game-menu-quit" class="btn">Quit Game</a>
       </section>
       <section id="match-screen" class="hidden">
-        <div id="how-to">
-          <strong>How to Play:</strong>
-          <p>TBD</p>
-        </div>
         <header>
+          <div class="match-right-menu">
+            <a href="index.html" id="match-quit">Quit Match</a>
+          </div>
           <div class="match-display">
             <strong>Score</strong>
             <div id="match-score">0</div>
@@ -43,12 +41,15 @@
         <div id="match-board"></div>
       </section>
       <footer>
-        <div>
-          <strong>Author:</strong>
+        <div class="credits">
+          <strong>Developer:</strong>
           <a href="http://github.com/luizbranco">Luiz Branco</a>
           -
           <strong>Image Credits:</strong>
           <a href="http://gryphon-shifter.deviantart.com/">Jessica Parker</a>
+          -
+          <strong>Animation Inspiration:</strong>
+          <a href="http://daneden.github.io/animate.css/">Daniel Eden</a>
         </div>
       </footer>
     </div>

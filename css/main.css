@@ -22,25 +22,53 @@ a {
 }
 
 h1 {
+  font-size: 44px;
   text-align: center;
 }
 
-#how-to {
-  float: left;
-  width: 500px;
-  margin-left: 10px;
+.btn {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
+  padding: 10px 30px;
+  font-size: 24px;
+  background-color: #16A085;
+  text-align: center;
+  border-radius: 10px;
+  color: #fff;
+}
+
+#game-menu-match {
+  width: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #34495E;
+  text-align: center;
+  border-radius: 10px;
 }
 
 header {
+  margin: 20px 10px;
+  overflow: hidden;
+}
+
+header .match-right-menu a {
   float: right;
-  margin: 0 10px 10px 0;
+  width: 100px;
+  padding: 10px;
+  background-color: #16A085;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  line-height: 44px;
 }
 
 header .match-display {
   display: inline-block;
   width: 80px;
   padding: 10px;
-  background-color: #bbada0;
+  background-color: #1ABC9C;
   border-radius: 10px;
   text-align: center;
   font-size: 24px;
@@ -63,19 +91,87 @@ header .match-display strong {
   float: left;
 }
 
-#match-board .tile {
-  display: block;
-  float: left;
-  margin: 8px;
-  background-color: rgba(238, 228, 218, 0.35);
-  border-radius: 10px;
-  cursor: pointer;
-}
-
 footer {
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid rgba(238, 228, 218, 0.35);
+}
+
+footer .credits {
+  margin-top: 20px;
   font-size: 12px;
   text-align: center;
 }
+
+.tile {
+  display: block;
+  float: left;
+  margin: 8px;
+  background-color: #34495E;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.tile.frozen {
+  -webkit-animation-duration: .5s;
+          animation-duration: .5s;
+  -webkit-animation-fill-mode: both;
+          animation-fill-mode: both;
+  -webkit-animation-name: hit;
+          animation-name: hit;
+}
+
+@-webkit-keyframes hit {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+
+  10%, 20% {
+    -webkit-transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -2deg);
+            transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -2deg);
+  }
+
+  30%, 50%, 70%, 90% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 2deg);
+            transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 2deg);
+  }
+
+  40%, 60%, 80% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -2deg);
+            transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -2deg);
+  }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes hit {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+
+  10%, 20% {
+    -webkit-transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -2deg);
+            transform: scale3d(.95, .95, .95) rotate3d(0, 0, 1, -2deg);
+  }
+
+  30%, 50%, 70%, 90% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 2deg);
+            transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, 2deg);
+  }
+
+  40%, 60%, 80% {
+    -webkit-transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -2deg);
+            transform: scale3d(1.05, 1.05, 1.05) rotate3d(0, 0, 1, -2deg);
+  }
+
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+  }
+}
+
