@@ -1,47 +1,49 @@
 <html>
   <head>
     <title>Memory Game</title>
+    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/main.css" type="text/css" />
     <link rel="stylesheet" href="css/theme-pokemon.css" type="text/css" />
   </head>
   <body>
-    <h1>Memory Game</h1>
-    <section id="game-menu">
-      <div>
-        <h2>New Match</h2>
-        <select name="game-mode" id="game-mode">
-          <option value="easy">Easy</option>
-          <option value="medium" selected>Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-        <select name="game-theme" id="game-theme">
-          <option value="pokemon" selected>Pokémon</option>
-        </select>
-        <button id="game-menu-match">New Match</button>
-      </div>
-      <ul>
-        <li><a href="#" id="game-menu-rules">Rules</a></li>
-        <li><a href="#" id="game-menu-about">About</a></li>
-        <li><a href="#" id="game-menu-quit">Quit</a></li>
-      </ul>
-    </section>
-    <section id="match-screen" class="hidden">
-      <header>
+    <div class="wrapper">
+      <h1>Memory Game</h1>
+      <section id="game-menu">
         <div>
-          <strong>Score:</strong>
-          <span id="match-score">0</span>
+          <select name="game-mode" id="game-mode">
+            <option value="easy">Easy</option>
+            <option value="medium" selected>Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+          <select name="game-theme" id="game-theme">
+            <option value="pokemon" selected>Pokémon</option>
+          </select>
+          <button id="game-menu-match">New Match</button>
         </div>
-        <div>
-          <strong>Misses:</strong>
-          <span id="match-misses">0</span>
-        </div>
-        <div>
-          <strong>Timer:</strong>
-          <span id="match-timer">00:00</span>
-        </div>
-      </header>
-      <div id="match-board"></div>
-    </section>
+        <ul>
+          <li><a href="#" id="game-menu-rules">Rules</a></li>
+          <li><a href="#" id="game-menu-about">About</a></li>
+          <li><a href="#" id="game-menu-quit">Quit</a></li>
+        </ul>
+      </section>
+      <section id="match-screen" class="hidden">
+        <header>
+          <div>
+            <strong>Score:</strong>
+            <span id="match-score">0</span>
+          </div>
+          <div>
+            <strong>Misses:</strong>
+            <span id="match-misses">0</span>
+          </div>
+          <div>
+            <strong>Timer:</strong>
+            <span id="match-timer">00:00</span>
+          </div>
+        </header>
+        <div id="match-board"></div>
+      </section>
+    </div>
     <script type="text/javascript" charset="utf-8" src="js/main.js"></script>
   </body>
 </html>

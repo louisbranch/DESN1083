@@ -1,13 +1,39 @@
+body {
+  font-family: 'Gloria Hallelujah', cursive;
+  color: #eee;
+  background: #111;
+}
+
 .hidden {
   display: none;
+}
+
+.wrapper {
+  width: 862px;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
 }
 
 .board-row {
   clear: both;
 }
 
+#match-board {
+  float: left;
+}
+
 #match-board .tile {
   display: block;
   float: left;
+  margin: 8px;
+  background-color: rgba(238, 228, 218, 0.35);
+  border-radius: 10px;
   cursor: pointer;
 }

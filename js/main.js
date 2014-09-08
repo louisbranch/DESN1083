@@ -41,11 +41,11 @@
 
   function Game() {
     this.modes = {
-      easy: {width: 4, height: 3},
+      easy: {width: 6, height: 2},
       medium: {width: 6, height: 4},
-      hard: {width: 8, height: 5},
+      hard: {width: 6, height: 8},
     };
-    this.themes = [ {name: "pokemon", maxTiles: 150} ];
+    this.themes = [ {name: "pokemon", maxTiles: 151} ];
     this.matches = 0;
   }
   mixin(Observer, Game);

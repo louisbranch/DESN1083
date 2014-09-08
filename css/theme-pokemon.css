@@ -3,6 +3,18 @@
   width: 127px;
 }
 
+.theme-pokemon .tile.active {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
+
+.theme-pokemon .tile.frozen {
+  -webkit-filter: none;
+  -moz-filter: none;
+  filter: none;
+}
+
 .theme-pokemon [class*="tile-"] {
   background-image: url('/imgs/pokemon1.png');
 }
@@ -157,3 +169,4 @@
 .theme-pokemon .tile-148 { background-image: url("/imgs/pokemon3.png"); background-position: -254px -1143px; }
 .theme-pokemon .tile-149 { background-image: url("/imgs/pokemon3.png"); background-position: -381px -1143px; }
 .theme-pokemon .tile-150 { background-image: url("/imgs/pokemon3.png"); background-position: -508px -1143px; }
+.theme-pokemon .tile-151 { background-image: url("/imgs/mew.png"); }
