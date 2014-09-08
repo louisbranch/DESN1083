@@ -47,6 +47,7 @@
     };
     this.themes = [ {name: "pokemon", maxTiles: 151} ];
     this.matches = 0;
+    this.scoreBoard = new ScoreBoard();
   }
   mixin(Observer, Game);
 
@@ -69,16 +70,24 @@
     return themes[0];
   };
 
+  Game.prototype.endMatch = function (score) {
+    this.scoreBoard.save(score);
+  };
+
   /* Game View */
   function GameView(model) {
     this.model = model;
     this.model.on("start", this.renderMatch, this);
+    this.model.on("start", this.renderScoreBoard, this);
+    this.scoreView = new ScoreBoardView(this.model.scoreBoard);
   }
 
   GameView.prototype.render = function () {
     this.el = this.el || document.querySelector("#game-menu");
     this.el.querySelector("#game-menu-options")
       .onclick = this.startMatch.bind(this);
+    this.el.querySelector("#game-menu-score-board")
+      .onclick = this.renderScoreBoard.bind(this);
     this.el.querySelector("#game-menu-quit")
       .onclick = this.closeGame;
   };
@@ -97,6 +106,12 @@
     this.hideMenu();
     var view = new MatchView(match);
     view.render();
+    return false;
+  };
+
+  GameView.prototype.renderScoreBoard = function () {
+    this.scoreView.render();
+    return false;
   };
 
   GameView.prototype.hideMenu = function () {
@@ -120,6 +135,7 @@
   mixin(Observer, Match);
 
   Match.prototype.end = function () {
+    this.game.endMatch(this.points);
     this.trigger("end");
   };
 
@@ -358,6 +374,65 @@
     if (mins < 10) mins = "0" + mins;
     if (secs < 10) secs = "0" + secs;
     return mins + ":" + secs;
+  };
+
+  /* Score Board */
+
+  function ScoreBoard() {
+    this.scores = this.parseScore();
+  }
+  mixin(Observer, ScoreBoard);
+
+  ScoreBoard.prototype.save = function (score) {
+    if (this.scores.indexOf(score) === -1) {
+      this.scores.push(score);
+      this.scores.sort();
+      var json = JSON.stringify(this.scores);
+      localStorage.setItem("scores",json);
+    }
+    this.trigger("new:score", score);
+  };
+
+  ScoreBoard.prototype.parseScore = function () {
+    var storage = localStorage.getItem("scores");
+    var scores;
+    try {
+      scores = JSON.parse(storage)
+    } catch (e) {
+    }
+    return scores || [];
+  };
+
+  /* Score Board View */
+
+  function ScoreBoardView(model) {
+    this.model = model;
+    this.model.on("show:score", this.render, this);
+    this.model.on("new:score", this.render, this);
+  }
+
+  ScoreBoardView.prototype.render = function (newScore) {
+    this.el = this.el || document.querySelector("#score-board");
+    var empty = this.el.querySelector("#score-board-empty");
+    if (this.model.scores.length) {
+      this.listScores(newScore);
+      empty.className = "hidden";
+    } else {
+      empty.className = "";
+    }
+    this.el.className = ""
+  };
+
+  ScoreBoardView.prototype.listScores = function (newScore) {
+    var list = document.querySelector("ol");
+    var frag = document.createDocumentFragment();
+    this.model.scores.forEach(function (score) {
+      var el = document.createElement("li");
+      el.textContent = score;
+      frag.appendChild(el);
+    });
+    list.appendChild(frag);
+    list.className = "";
   };
 
   /* Initializing Game */

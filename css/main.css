@@ -1,3 +1,5 @@
+/* Global Elements -----------------------------------------------------------*/
+
 body {
   font-family: 'Capriola', sans-serif;
   color: #eee;
@@ -9,21 +11,16 @@ a {
   text-decoration: none;
 }
 
-.hidden {
-  display: none;
-}
-
-.wrapper {
-  width: 862px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-
 h1 {
+  margin: 10px 0 20px;
   font-size: 44px;
   text-align: center;
+}
+
+/* Helper Classes ------------------------------------------------------------*/
+
+.hidden {
+  display: none;
 }
 
 .btn {
@@ -38,6 +35,16 @@ h1 {
   color: #fff;
 }
 
+/* Skeleton ------------------------------------------------------------------*/
+
+.wrapper {
+  width: 862px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+
 #game-menu-match {
   width: 300px;
   margin: 0 auto;
@@ -46,6 +53,8 @@ h1 {
   text-align: center;
   border-radius: 10px;
 }
+
+/* Board Layout --------------------------------------------------------------*/
 
 header {
   margin: 20px 10px;
@@ -91,6 +100,8 @@ header .match-display strong {
   float: left;
 }
 
+/* Footer  -------------------------------------------------------------------*/
+
 footer {
   margin-top: 20px;
   padding-top: 20px;
@@ -102,6 +113,8 @@ footer .credits {
   font-size: 12px;
   text-align: center;
 }
+
+/* Tile  ---------------------------------------------------------------------*/
 
 .tile {
   display: block;
@@ -174,4 +187,3 @@ footer .credits {
             transform: scale3d(1, 1, 1);
   }
 }
-
