@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Memory Game</title>
-    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Capriola' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/main.css" type="text/css" />
     <link rel="stylesheet" href="css/theme-pokemon.css" type="text/css" />
   </head>
@@ -20,29 +20,37 @@
           </select>
           <button id="game-menu-match">New Match</button>
         </div>
-        <ul>
-          <li><a href="#" id="game-menu-rules">Rules</a></li>
-          <li><a href="#" id="game-menu-about">About</a></li>
-          <li><a href="#" id="game-menu-quit">Quit</a></li>
-        </ul>
       </section>
       <section id="match-screen" class="hidden">
+        <div id="how-to">
+          <strong>How to Play:</strong>
+          <p>TBD</p>
+        </div>
         <header>
-          <div>
-            <strong>Score:</strong>
-            <span id="match-score">0</span>
+          <div class="match-display">
+            <strong>Score</strong>
+            <div id="match-score">0</div>
           </div>
-          <div>
-            <strong>Misses:</strong>
-            <span id="match-misses">0</span>
+          <div class="match-display">
+            <strong>Misses</strong>
+            <div id="match-misses">0</div>
           </div>
-          <div>
-            <strong>Timer:</strong>
-            <span id="match-timer">00:00</span>
+          <div class="match-display">
+            <strong>Timer</strong>
+            <div id="match-timer">00:00</div>
           </div>
         </header>
         <div id="match-board"></div>
       </section>
+      <footer>
+        <div>
+          <strong>Author:</strong>
+          <a href="http://github.com/luizbranco">Luiz Branco</a>
+          -
+          <strong>Image Credits:</strong>
+          <a href="http://gryphon-shifter.deviantart.com/">Jessica Parker</a>
+        </div>
+      </footer>
     </div>
     <script type="text/javascript" charset="utf-8" src="js/main.js"></script>
   </body>

@@ -1,7 +1,12 @@
 body {
-  font-family: 'Gloria Hallelujah', cursive;
+  font-family: 'Capriola', sans-serif;
   color: #eee;
   background: #111;
+}
+
+a {
+  color: #776e65;
+  text-decoration: none;
 }
 
 .hidden {
@@ -10,7 +15,6 @@ body {
 
 .wrapper {
   width: 862px;
-  height: 100%;
   margin: 0 auto;
   overflow: hidden;
   border-radius: 10px;
@@ -21,8 +25,38 @@ h1 {
   text-align: center;
 }
 
+#how-to {
+  float: left;
+  width: 500px;
+  margin-left: 10px;
+}
+
+header {
+  float: right;
+  margin: 0 10px 10px 0;
+}
+
+header .match-display {
+  display: inline-block;
+  width: 80px;
+  padding: 10px;
+  background-color: #bbada0;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 24px;
+  color: #fff;
+}
+
+header .match-display strong {
+  font-size: 11px;
+}
+
 .board-row {
   clear: both;
+}
+
+#match-screen {
+  overflow: hidden;
 }
 
 #match-board {
@@ -36,4 +70,12 @@ h1 {
   background-color: rgba(238, 228, 218, 0.35);
   border-radius: 10px;
   cursor: pointer;
+}
+
+footer {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(238, 228, 218, 0.35);
+  font-size: 12px;
+  text-align: center;
 }
