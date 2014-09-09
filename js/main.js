@@ -41,7 +41,7 @@
 
   function Game() {
     this.modes = {
-      easy: {width: 2, height: 1},
+      easy: {width: 6, height: 4},
       medium: {width: 6, height: 5},
       hard: {width: 6, height: 6},
     };
@@ -383,9 +383,11 @@
   ScoreBoard.prototype.save = function (score) {
     if (this.scores.indexOf(score) === -1) {
       this.scores.push(score);
-      this.scores.sort();
-      this.scores.reverse();
-      this.scores = this.scores.slice(0, 10);
+      this.scores.sort(function (a, b) {
+        if (a > b) return -1;
+        else return 1;
+      });
+      this.scores = this.scores.splice(0, 10);
       var json = JSON.stringify(this.scores);
       localStorage.setItem("scores",json);
     }
