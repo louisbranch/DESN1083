@@ -20,7 +20,7 @@ h1 {
 /* Helper Classes ------------------------------------------------------------*/
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .btn {
@@ -217,6 +217,11 @@ footer .credits {
 
 #score-board ol li {
   margin: 5px 0;
+}
+
+#score-board ol li.highlighted {
+  color: #776e65; /*FIXME*/
+  font-weight: bold;
 }
 
 #score-board .btn-group {

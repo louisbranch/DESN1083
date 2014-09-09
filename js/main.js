@@ -385,6 +385,7 @@
       this.scores.push(score);
       this.scores.sort();
       this.scores.reverse();
+      this.scores = this.scores.slice(0, 10);
       var json = JSON.stringify(this.scores);
       localStorage.setItem("scores",json);
     }
@@ -411,6 +412,25 @@
 
   ScoreBoardView.prototype.render = function (newScore) {
     this.el = this.el || document.querySelector("#score-board");
+    this.showOptions(newScore);
+    this.checkList(newScore);
+    this.el.className = ""
+  };
+
+  ScoreBoardView.prototype.showOptions = function (newScore) {
+    var menu = this.el.querySelector("#score-board-menu");
+    var close = this.el.querySelector("#score-board-close");
+    if (newScore) {
+      menu.className = "btn";
+      close.className = "btn hidden";
+    } else {
+      menu.className = "btn hidden";
+      close.className = "btn";
+      close.onclick = this.hide.bind(this);
+    }
+  };
+
+  ScoreBoardView.prototype.checkList = function (newScore) {
     var empty = this.el.querySelector("#score-board-empty");
     if (this.model.scores.length) {
       this.listScores(newScore);
@@ -418,7 +438,6 @@
     } else {
       empty.className = "";
     }
-    this.el.className = ""
   };
 
   ScoreBoardView.prototype.renderNewScore = function (score) {
@@ -440,6 +459,11 @@
     });
     list.appendChild(frag);
     list.className = "";
+  };
+
+  ScoreBoardView.prototype.hide = function () {
+    this.el.className = "hidden";
+    return false;
   };
 
   /* Initializing Game */
