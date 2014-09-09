@@ -13,7 +13,7 @@
     }
   }
 
-  /* Observer pattern */
+  /* Observer (Pub/Sub) pattern */
 
   function Observer() { }
 
@@ -41,12 +41,11 @@
 
   function Game() {
     this.modes = {
-      easy: {width: 6, height: 4},
+      easy: {width: 2, height: 1},
       medium: {width: 6, height: 5},
       hard: {width: 6, height: 6},
     };
     this.themes = [ {name: "pokemon", maxTiles: 151} ];
-    this.matches = 0;
     this.scoreBoard = new ScoreBoard();
   }
   mixin(Observer, Game);
@@ -58,7 +57,6 @@
       size: this.modes[mode],
       theme: this.findTheme(theme)
     };
-    this.matches += 1;
     var match = new Match(this, options);
     game.trigger("start", match);
   };
@@ -78,7 +76,6 @@
   function GameView(model) {
     this.model = model;
     this.model.on("start", this.renderMatch, this);
-    this.model.on("start", this.renderScoreBoard, this);
     this.scoreView = new ScoreBoardView(this.model.scoreBoard);
   }
 
@@ -387,6 +384,7 @@
     if (this.scores.indexOf(score) === -1) {
       this.scores.push(score);
       this.scores.sort();
+      this.scores.reverse();
       var json = JSON.stringify(this.scores);
       localStorage.setItem("scores",json);
     }
@@ -408,7 +406,7 @@
   function ScoreBoardView(model) {
     this.model = model;
     this.model.on("show:score", this.render, this);
-    this.model.on("new:score", this.render, this);
+    this.model.on("new:score", this.renderNewScore, this);
   }
 
   ScoreBoardView.prototype.render = function (newScore) {
@@ -423,12 +421,21 @@
     this.el.className = ""
   };
 
+  ScoreBoardView.prototype.renderNewScore = function (score) {
+    var view = this;
+    setTimeout(function () {
+      view.render(score);
+    }, 500);
+  };
+
   ScoreBoardView.prototype.listScores = function (newScore) {
     var list = document.querySelector("ol");
+    list.innerHTML = "";
     var frag = document.createDocumentFragment();
     this.model.scores.forEach(function (score) {
       var el = document.createElement("li");
       el.textContent = score;
+      if (score === newScore) el.className = "highlighted";
       frag.appendChild(el);
     });
     list.appendChild(frag);

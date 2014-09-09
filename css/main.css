@@ -24,9 +24,7 @@ h1 {
 }
 
 .btn {
-  display: block;
-  width: 200px;
-  margin: 20px auto;
+  display: inline-block;
   padding: 10px 30px;
   font-size: 24px;
   background-color: #16A085;
@@ -43,6 +41,12 @@ h1 {
   overflow: hidden;
   border-radius: 10px;
   box-sizing: border-box;
+}
+
+#game-menu .btn {
+  display: block;
+  width: 200px;
+  margin: 20px auto;
 }
 
 #game-menu-match {
@@ -187,3 +191,36 @@ footer .credits {
             transform: scale3d(1, 1, 1);
   }
 }
+
+/* Score Board  --------------------------------------------------------------*/
+
+#score-board {
+  position: absolute;
+  top: 0;
+  width: 862px;
+  margin: 10% auto 0;
+  padding: 20px;
+  background-color: rgba(60,60,60,.95);
+  border-radius: 20px;
+}
+
+#score-board h2 {
+  margin-top: 0;
+  text-align: center;
+}
+
+#score-board ol {
+  width: 200px;
+  margin: 0 auto;
+  font-size: 20px;
+}
+
+#score-board ol li {
+  margin: 5px 0;
+}
+
+#score-board .btn-group {
+  margin-top: 20px;
+  text-align: center;
+}
+
