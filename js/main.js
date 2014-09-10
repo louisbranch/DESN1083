@@ -41,7 +41,6 @@
   };
 
   Observer.prototype.on = function (event, callback, context) {
-    console.log(event);
     this.listeners(event).push({callback: callback, context: context});
   };
 
@@ -511,7 +510,7 @@
   ScoreBoardView.prototype.render = function (newScore) {
     this.el = this.el || document.querySelector("#score-board");
     this.showOptions(newScore);
-    this.checkList(newScore);
+    this.listScores(newScore);
     this.el.className = ""
     window.scrollTo(0,0);
   };
@@ -530,16 +529,6 @@
     }
   };
 
-  ScoreBoardView.prototype.checkList = function (newScore) {
-    var empty = this.el.querySelector("#score-board-empty");
-    if (this.model.scores.length) {
-      this.listScores(newScore);
-      empty.className = "hidden";
-    } else {
-      empty.className = "";
-    }
-  };
-
   ScoreBoardView.prototype.renderNewScore = function (score) {
     var view = this;
     setTimeout(function () {
@@ -551,14 +540,22 @@
     var list = this.el.querySelector("ol");
     list.innerHTML = "";
     var frag = document.createDocumentFragment();
-    this.model.scores.forEach(function (score) {
+    var scores = this.getScores();
+    for (var i = 0, l = scores.length; i < l; i ++) {
       var el = document.createElement("li");
-      el.textContent = score;
+      var score = scores[i] || "-";
+      el.textContent = score || "-";
       if (score === newScore) el.className = "highlighted";
       frag.appendChild(el);
-    });
+    }
     list.appendChild(frag);
     list.className = "";
+  };
+
+  ScoreBoardView.prototype.getScores = function () {
+    var scores = this.model.scores;
+    if (!scores.length) scores = new Array(10);
+    return scores;
   };
 
   ScoreBoardView.prototype.hide = function () {

@@ -43,6 +43,10 @@ h1 {
   box-sizing: border-box;
 }
 
+#game-menu {
+  margin-top: 40px;
+}
+
 #game-menu .btn {
   display: block;
   width: 200px;
@@ -107,7 +111,7 @@ header .match-display strong {
 /* Footer  -------------------------------------------------------------------*/
 
 footer {
-  margin-top: 20px;
+  margin-top: 40px;
   padding-top: 20px;
   border-top: 1px solid rgba(238, 228, 218, 0.35);
 }
@@ -195,22 +199,29 @@ footer .credits {
 /* Score Board  --------------------------------------------------------------*/
 
 #score-board {
-  position: absolute;
+  position: fixed;
   top: 0;
-  width: 862px;
-  margin: 50px auto 0;
-  padding: 20px;
-  background-color: rgba(60,60,60,.95);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: rgba(0,0,0,.7);
+}
+
+#score-board > div {
+  position: relative;
+  width: 600px;
+  margin: 60px auto;
+  padding: 30px;
   border-radius: 20px;
+  background-color: #000;
 }
 
 #score-board h2 {
   margin-top: 0;
   text-align: center;
-}
-
-#score-board-content {
-  min-height: 200px;
 }
 
 #score-board-empty {
