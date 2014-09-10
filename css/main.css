@@ -198,7 +198,7 @@ footer .credits {
   position: absolute;
   top: 0;
   width: 862px;
-  margin: 10% auto 0;
+  margin: 50px auto 0;
   padding: 20px;
   background-color: rgba(60,60,60,.95);
   border-radius: 20px;
@@ -212,7 +212,7 @@ footer .credits {
 #score-board ol {
   width: 200px;
   margin: 0 auto;
-  font-size: 20px;
+  font-size: 28px;
 }
 
 #score-board ol li {
@@ -228,4 +228,3 @@ footer .credits {
   margin-top: 20px;
   text-align: center;
 }
-

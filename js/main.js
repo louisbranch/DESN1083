@@ -54,6 +54,7 @@
     mode = mode || "easy";
     theme = theme || "pokemon";
     var options = {
+      mode: mode,
       size: this.modes[mode],
       theme: this.findTheme(theme)
     };
@@ -123,9 +124,11 @@
 
   function Match(game, options) {
     this.game = game;
+    this.mode = options.mode;
     this.timer = new Timer();
     this.hits = 0;
     this.points = 0;
+    this.pointsMultiplier = this.multiplier();
     this.misses = 0;
     this.board = new Board(this, options);
   }
@@ -138,13 +141,25 @@
 
   Match.prototype.score = function () {
     this.hits += 1;
-    this.points += Math.floor((this.hits * 1000) / this.timer.ellapsed());
+    this.calcularePoints();
     this.trigger("score", this.points);
+  };
+
+  Match.prototype.calcularePoints = function () {
+    var hitSpeed = Math.floor((this.hits * 1000) / this.timer.ellapsed());
+    this.points += hitSpeed * this.pointsMultiplier;
   };
 
   Match.prototype.miss = function () {
     this.misses += 1;
     this.trigger("miss", this.misses);
+  };
+
+  Match.prototype.multiplier = function () {
+    var multipliers = {
+      easy: 1, medium: 2, hard: 3
+    };
+    return multipliers[this.mode];
   };
 
   /* Match View */
@@ -417,6 +432,7 @@
     this.showOptions(newScore);
     this.checkList(newScore);
     this.el.className = ""
+    window.scrollTo(0,0);
   };
 
   ScoreBoardView.prototype.showOptions = function (newScore) {
