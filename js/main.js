@@ -41,6 +41,7 @@
   };
 
   Observer.prototype.on = function (event, callback, context) {
+    console.log(event);
     this.listeners(event).push({callback: callback, context: context});
   };
 
@@ -57,7 +58,9 @@
   function AudioPlayer() { }
 
   AudioPlayer.prototype.playSound = function (name) {
-    this._sounds[name].play();
+    var sound = this._sounds[name];
+    sound.load();
+    sound.play();
   };
 
   AudioPlayer.prototype.stopSound = function (name) {
@@ -66,9 +69,11 @@
     sound.currentTime = 0;
   };
 
-  AudioPlayer.prototype.setSound = function (name) {
+  AudioPlayer.prototype.setSound = function (name, volume) {
+    var sound = document.querySelector("audio#sound-" + name);
+    sound.volume = volume || 1;
     this._sounds = this._sounds || {};
-    this._sounds[name] = document.querySelector("audio#sound-" + name);
+    this._sounds[name] = sound;
   };
 
   /* Game Model */
@@ -106,7 +111,7 @@
     this.model = model;
     this.model.on("start", this.renderMatch, this);
     this.scoreView = new ScoreBoardView(this.model.scoreBoard);
-    this.setSound("opening");
+    this.setSound("opening", 0.5);
   }
   mixin(AudioPlayer, GameView);
 
@@ -194,7 +199,7 @@
     this.model.on("end", this.remove, this);
     this.model.on("score", this.renderScore, this);
     this.model.on("miss", this.renderMisses, this);
-    this.setSound("battle");
+    this.setSound("battle", 0.5);
   }
   mixin(AudioPlayer, MatchView);
 
@@ -273,6 +278,7 @@
     }
     this.tiles = rows;
   };
+  mixin(Observer, Board);
 
   Board.prototype.random = function (max) {
     return Math.floor(Math.random() * max);
@@ -291,6 +297,7 @@
   Board.prototype.select = function (tile) {
     if (!this.selected) {
       this.selected = tile;
+      this.trigger("selected");
       return;
     }
     if (this.selected === tile) return;
@@ -310,6 +317,7 @@
       tile.match();
     });
     this.guessed += 1;
+    this.trigger("hit");
     if (this.guessed === this.needed) this.match.end();
   };
 
@@ -318,13 +326,21 @@
     tiles.forEach(function (tile) {
       tile.hide();
     });
+    this.trigger("miss");
   };
 
   /* Board View */
 
   function BoardView(model) {
     this.model = model;
+    this.setSound("select");
+    this.setSound("hit");
+    this.setSound("miss", 0.7);
+    this.model.on("select", this.select, this);
+    this.model.on("hit", this.hit, this);
+    this.model.on("miss", this.miss, this);
   }
+  mixin(AudioPlayer, BoardView);
 
   BoardView.prototype.render = function () {
     var el = this.el = document.querySelector("#match-board");
@@ -350,6 +366,18 @@
     views.forEach(function (view) {
       view.flipDown(REVEAL_TIME, true);
     });
+  };
+
+  BoardView.prototype.select = function () {
+    this.playSound("select");
+  };
+
+  BoardView.prototype.hit = function () {
+    this.playSound("hit");
+  };
+
+  BoardView.prototype.miss = function () {
+    this.playSound("miss");
   };
 
   BoardView.prototype.classes = function () {
@@ -476,7 +504,7 @@
     this.model = model;
     this.model.on("show:score", this.render, this);
     this.model.on("new:score", this.renderNewScore, this);
-    this.setSound("ending");
+    this.setSound("ending", 0.5);
   }
   mixin(AudioPlayer, ScoreBoardView);
 
