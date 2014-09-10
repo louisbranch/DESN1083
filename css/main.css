@@ -13,7 +13,7 @@ a {
 
 h1 {
   margin: 10px 0 20px;
-  font-size: 44px;
+  font-size: 34px;
   text-align: center;
 }
 
@@ -68,23 +68,23 @@ header {
 header .match-right-menu a {
   float: right;
   width: 100px;
-  padding: 10px;
+  padding: 5px;
   background-color: #16A085;
   border-radius: 10px;
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #fff;
-  line-height: 44px;
+  line-height: 39px;
 }
 
 header .match-display {
   display: inline-block;
   width: 80px;
-  padding: 10px;
+  padding: 5px;
   background-color: #1ABC9C;
   border-radius: 10px;
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   color: #fff;
 }
 
@@ -209,8 +209,18 @@ footer .credits {
   text-align: center;
 }
 
+#score-board-content {
+  min-height: 200px;
+}
+
+#score-board-empty {
+  margin-top: 50px;
+  font-size: 20px;
+  text-align: center;
+}
+
 #score-board ol {
-  width: 200px;
+  width: 150px;
   margin: 0 auto;
   font-size: 28px;
 }

@@ -1,5 +1,22 @@
 ;(function () {
 
+  /* Game Settings */
+
+  var MODES = {
+    easy: {width: 6, height: 4, bonusMultiplier: 1},
+    medium: {width: 6, height: 5, bonusMultiplier: 2},
+    hard: {width: 6, height: 6, bonusMultiplier: 3},
+  };
+
+  var THEMES = [
+    {
+      name: "pokemon",
+      maxTiles: 151
+    }
+  ];
+
+  var REVEAL_TIME = 1500; //ms
+
   /* Mixin helper
    *
    * Adds methods from one prototype to the other
@@ -37,15 +54,26 @@
     }, 0);
   };
 
+  function AudioPlayer() { }
+
+  AudioPlayer.prototype.playSound = function (name) {
+    this._sounds[name].play();
+  };
+
+  AudioPlayer.prototype.stopSound = function (name) {
+    var sound = this._sounds[name];
+    sound.pause();
+    sound.currentTime = 0;
+  };
+
+  AudioPlayer.prototype.setSound = function (name) {
+    this._sounds = this._sounds || {};
+    this._sounds[name] = document.querySelector("audio#sound-" + name);
+  };
+
   /* Game Model */
 
   function Game() {
-    this.modes = {
-      easy: {width: 6, height: 4},
-      medium: {width: 6, height: 5},
-      hard: {width: 6, height: 6},
-    };
-    this.themes = [ {name: "pokemon", maxTiles: 151} ];
     this.scoreBoard = new ScoreBoard();
   }
   mixin(Observer, Game);
@@ -55,7 +83,7 @@
     theme = theme || "pokemon";
     var options = {
       mode: mode,
-      size: this.modes[mode],
+      size: MODES[mode],
       theme: this.findTheme(theme)
     };
     var match = new Match(this, options);
@@ -63,7 +91,7 @@
   };
 
   Game.prototype.findTheme = function (name) {
-    var themes = this.themes.filter(function (theme) {
+    var themes = THEMES.filter(function (theme) {
       return theme.name === name;
     });
     return themes[0];
@@ -78,7 +106,9 @@
     this.model = model;
     this.model.on("start", this.renderMatch, this);
     this.scoreView = new ScoreBoardView(this.model.scoreBoard);
+    this.setSound("opening");
   }
+  mixin(AudioPlayer, GameView);
 
   GameView.prototype.render = function () {
     this.el = this.el || document.querySelector("#game-menu");
@@ -88,6 +118,7 @@
       .onclick = this.renderScoreBoard.bind(this);
     this.el.querySelector("#game-menu-quit")
       .onclick = this.closeGame;
+    this.playSound("opening");
   };
 
   GameView.prototype.startMatch = function (event) {
@@ -101,6 +132,7 @@
   };
 
   GameView.prototype.renderMatch = function (match) {
+    this.stopSound("opening");
     this.hideMenu();
     var view = new MatchView(match);
     view.render();
@@ -123,12 +155,12 @@
   /* Match Model */
 
   function Match(game, options) {
+    var mode = options.mode;
     this.game = game;
-    this.mode = options.mode;
     this.timer = new Timer();
     this.hits = 0;
     this.points = 0;
-    this.pointsMultiplier = this.multiplier();
+    this.bonusMultiplier = MODES[mode].bonusMultiplier;
     this.misses = 0;
     this.board = new Board(this, options);
   }
@@ -147,7 +179,7 @@
 
   Match.prototype.calcularePoints = function () {
     var hitSpeed = Math.floor((this.hits * 1000) / this.timer.ellapsed());
-    this.points += hitSpeed * this.pointsMultiplier;
+    this.points += hitSpeed * this.bonusMultiplier;
   };
 
   Match.prototype.miss = function () {
@@ -155,21 +187,16 @@
     this.trigger("miss", this.misses);
   };
 
-  Match.prototype.multiplier = function () {
-    var multipliers = {
-      easy: 1, medium: 2, hard: 3
-    };
-    return multipliers[this.mode];
-  };
-
   /* Match View */
 
   function MatchView(model) {
     this.model = model;
-    this.model.on("end", this.stopTimer, this);
+    this.model.on("end", this.remove, this);
     this.model.on("score", this.renderScore, this);
     this.model.on("miss", this.renderMisses, this);
+    this.setSound("battle");
   }
+  mixin(AudioPlayer, MatchView);
 
   MatchView.prototype.render = function () {
     this.board = new BoardView(this.model.board);
@@ -177,6 +204,7 @@
     this.board.render();
     this.el.className = "";
     this.updateTimer();
+    this.playSound("battle");
   };
 
   MatchView.prototype.renderScore = function (score) {
@@ -195,6 +223,11 @@
     this.timer = setInterval(function () {
       el.textContent = clock.toString();
     }, 500);
+  };
+
+  MatchView.prototype.remove = function () {
+    this.stopSound("battle");
+    this.stopTimer();
   };
 
   MatchView.prototype.stopTimer = function () {
@@ -295,15 +328,27 @@
 
   BoardView.prototype.render = function () {
     var el = this.el = document.querySelector("#match-board");
+    var views = [];
     this.el.className = this.classes();
     this.model.tiles.forEach(function (column) {
       var row = document.createElement("div");
       row.className = "board-row";
       column.forEach(function (tile) {
         var view = new TileView(tile);
+        views.push(view);
         row.appendChild(view.render());
       });
       el.appendChild(row);
+    });
+    this.revealTiles(views);
+  };
+
+  BoardView.prototype.revealTiles = function (views) {
+    views.forEach(function (view) {
+      view.flipUp();
+    });
+    views.forEach(function (view) {
+      view.flipDown(REVEAL_TIME, true);
     });
   };
 
@@ -320,6 +365,7 @@
   mixin(Observer, Tile);
 
   Tile.prototype.select = function () {
+    this.trigger("show");
     this.board.select(this);
   };
 
@@ -336,27 +382,32 @@
   function TileView(model) {
     this.model = model;
     this.model.on("match", this.match, this);
+    this.model.on("show", this.flipUp, this);
     this.model.on("hide", this.flipDown, this);
   }
 
   TileView.prototype.render = function () {
     this.el = document.createElement("div");
     this.el.className = "tile";
-    this.el.onclick = this.flipUp.bind(this);
     return this.el;
+  };
+
+  TileView.prototype.bindClick = function () {
+    this.el.onclick = this.model.select.bind(this.model);
   };
 
   TileView.prototype.flipUp = function () {
     var id = this.model.id;
     this.el.className = "tile tile-" + id + " active";
-    this.model.select();
   };
 
-  TileView.prototype.flipDown = function () {
-    var el = this.el;
+  TileView.prototype.flipDown = function (time, bind) {
+    time = time || 500;
+    var view = this;
     setTimeout(function () {
-      el.className = "tile";
-    }, 500);
+      view.el.className = "tile";
+      if (bind) view.bindClick();
+    }, time);
   };
 
   TileView.prototype.match = function () {
@@ -425,7 +476,9 @@
     this.model = model;
     this.model.on("show:score", this.render, this);
     this.model.on("new:score", this.renderNewScore, this);
+    this.setSound("ending");
   }
+  mixin(AudioPlayer, ScoreBoardView);
 
   ScoreBoardView.prototype.render = function (newScore) {
     this.el = this.el || document.querySelector("#score-board");
@@ -441,6 +494,7 @@
     if (newScore) {
       menu.className = "btn";
       close.className = "btn hidden";
+      this.playSound("ending");
     } else {
       menu.className = "btn hidden";
       close.className = "btn";
@@ -466,7 +520,7 @@
   };
 
   ScoreBoardView.prototype.listScores = function (newScore) {
-    var list = document.querySelector("ol");
+    var list = this.el.querySelector("ol");
     list.innerHTML = "";
     var frag = document.createDocumentFragment();
     this.model.scores.forEach(function (score) {
@@ -481,6 +535,7 @@
 
   ScoreBoardView.prototype.hide = function () {
     this.el.className = "hidden";
+    this.stopSound("ending");
     return false;
   };
 
