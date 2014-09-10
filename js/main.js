@@ -115,14 +115,22 @@
   mixin(AudioPlayer, GameView);
 
   GameView.prototype.render = function () {
+    var view = this;
     this.el = this.el || document.querySelector("#game-menu");
-    this.el.querySelector("#game-menu-options")
-      .onclick = this.startMatch.bind(this);
+    this.bindMenuOptions();
     this.el.querySelector("#game-menu-score-board")
       .onclick = this.renderScoreBoard.bind(this);
     this.el.querySelector("#game-menu-quit")
       .onclick = this.closeGame;
     this.playSound("opening");
+  };
+
+  GameView.prototype.bindMenuOptions = function () {
+    var opts = this.el.querySelectorAll("#game-menu-options a");
+    for (var i = 0, l = opts.length; i < l; i ++) {
+      var menu = opts[i];
+      menu.onclick = view.startMatch.bind(view);
+    }
   };
 
   GameView.prototype.startMatch = function (event) {
@@ -537,25 +545,20 @@
   };
 
   ScoreBoardView.prototype.listScores = function (newScore) {
+    var el, score;
     var list = this.el.querySelector("ol");
-    list.innerHTML = "";
     var frag = document.createDocumentFragment();
-    var scores = this.getScores();
-    for (var i = 0, l = scores.length; i < l; i ++) {
-      var el = document.createElement("li");
-      var score = scores[i] || "-";
-      el.textContent = score || "-";
+    var scores = this.model.scores;
+    list.innerHTML = "";
+    for (var i = 0; i < 10; i++) {
+      el = document.createElement("li");
+      score = scores[i] || "-";
+      el.textContent = score;
       if (score === newScore) el.className = "highlighted";
       frag.appendChild(el);
     }
     list.appendChild(frag);
     list.className = "";
-  };
-
-  ScoreBoardView.prototype.getScores = function () {
-    var scores = this.model.scores;
-    if (!scores.length) scores = new Array(10);
-    return scores;
   };
 
   ScoreBoardView.prototype.hide = function () {
