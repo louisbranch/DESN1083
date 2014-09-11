@@ -3,15 +3,30 @@
   /* Game Settings */
 
   var LEVELS = {
-    easy: {width: 6, height: 4, bonusMultiplier: 1},
-    medium: {width: 6, height: 5, bonusMultiplier: 1.25},
-    hard: {width: 6, height: 6, bonusMultiplier: 1.5},
+    easy: {
+      width: 6,
+      height: 4,
+      bonusMultiplier: 1,
+      timer: 240000
+    },
+    medium: {
+      width: 6,
+      height: 5,
+      bonusMultiplier: 1.25,
+      timer: 270000
+    },
+    hard: {
+      width: 6,
+      height: 6,
+      bonusMultiplier: 1.5,
+      timer: 300000
+    }
   };
 
   var THEMES = [
     {
       name: "pokemon",
-      maxTiles: 151
+      tiles: 151
     }
   ];
 
@@ -168,7 +183,7 @@
   function Match(game, options) {
     var level = options.level;
     this.game = game;
-    this.timer = new Timer();
+    this.timer = new Timer(this, options);
     this.hits = 0;
     this.points = 0;
     this.bonusMultiplier = level.bonusMultiplier;
@@ -230,10 +245,21 @@
 
   MatchView.prototype.updateTimer = function () {
     var el = this.el.querySelector("#match-timer");
+    var format = this.formatTime;
     var clock = this.model.timer;
     this.timer = setInterval(function () {
-      el.textContent = clock.toString();
+      var time = clock.tick();
+      el.textContent = format(time);
     }, 500);
+  };
+
+  MatchView.prototype.formatTime = function (time) {
+    if (!time || time < 0) return "00:00";
+    var mins = Math.floor(time / 60);
+    var secs = Math.floor(time % 60);
+    if (mins < 10) mins = "0" + mins;
+    if (secs < 10) secs = "0" + secs;
+    return mins + ":" + secs;
   };
 
   MatchView.prototype.remove = function () {
@@ -291,7 +317,7 @@
   };
 
   Board.prototype.getRandomTileIds = function () {
-    var max = this.theme.maxTiles;
+    var max = this.theme.tiles;
     var ids = [];
     while (ids.length < this.needed) {
       var rnd = this.random(max) + 1;
@@ -452,7 +478,9 @@
 
   /* Timer Model */
 
-  function Timer() {
+  function Timer(match, options) {
+    this.match = match;
+    this.max = options.level.timer / 1000;
     this.start = this.now();
   }
 
@@ -464,13 +492,10 @@
     return (this.now() - this.start) / 1000;
   };
 
-  Timer.prototype.toString = function () {
-    var time = this.ellapsed();
-    var mins = Math.floor(time / 60);
-    var secs = Math.floor(time % 60);
-    if (mins < 10) mins = "0" + mins;
-    if (secs < 10) secs = "0" + secs;
-    return mins + ":" + secs;
+  Timer.prototype.tick = function () {
+    var time = this.max - this.ellapsed();
+    if (time <= 0) this.match.end();
+    return Math.floor(time);
   };
 
   /* Score Board */
@@ -525,7 +550,7 @@
   ScoreBoardView.prototype.showOptions = function (newScore) {
     var menu = this.el.querySelector("#score-board-menu");
     var close = this.el.querySelector("#score-board-close");
-    if (newScore) {
+    if (newScore >= 0) {
       menu.className = "btn";
       close.className = "btn hidden";
       this.playSound("ending");
