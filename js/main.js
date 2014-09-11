@@ -2,7 +2,7 @@
 
   /* Game Settings */
 
-  var MODES = {
+  var LEVELS = {
     easy: {width: 6, height: 4, bonusMultiplier: 1},
     medium: {width: 6, height: 5, bonusMultiplier: 1.25},
     hard: {width: 6, height: 6, bonusMultiplier: 1.5},
@@ -82,11 +82,11 @@
   }
   mixin(Observer, Game);
 
-  Game.prototype.start = function (mode, theme) {
-    mode = mode || "easy";
+  Game.prototype.start = function (level, theme) {
+    level = level || "easy";
     theme = theme || "pokemon";
     var options = {
-      mode: MODES[mode],
+      level: LEVELS[level],
       theme: this.findTheme(theme)
     };
     var match = new Match(this, options);
@@ -133,8 +133,8 @@
   };
 
   GameView.prototype.startMatch = function (event) {
-    var mode = event.target.dataset.mode;
-    this.model.start(mode);
+    var level = event.target.dataset.level;
+    this.model.start(level);
     return false;
   };
 
@@ -166,12 +166,12 @@
   /* Match Model */
 
   function Match(game, options) {
-    var mode = options.mode;
+    var level = options.level;
     this.game = game;
     this.timer = new Timer();
     this.hits = 0;
     this.points = 0;
-    this.bonusMultiplier = mode.bonusMultiplier;
+    this.bonusMultiplier = level.bonusMultiplier;
     this.misses = 0;
     this.board = new Board(this, options);
   }
@@ -249,8 +249,8 @@
 
   function Board(match, options) {
     this.match = match;
-    this.width = options.mode.width;
-    this.height = options.mode.height;
+    this.width = options.level.width;
+    this.height = options.level.height;
     this.theme = options.theme;
     this.selected = null;
     this.needed = (this.width * this.height) / 2;
