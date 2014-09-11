@@ -114,6 +114,7 @@
   mixin(AudioPlayer, GameView);
 
   GameView.prototype.render = function () {
+    this.playSound("opening");
     var view = this;
     this.el = this.el || document.querySelector("#game-menu");
     this.bindMenuOptions();
@@ -121,7 +122,6 @@
       .onclick = this.renderScoreBoard.bind(this);
     this.el.querySelector("#game-menu-quit")
       .onclick = this.closeGame;
-    this.playSound("opening");
   };
 
   GameView.prototype.bindMenuOptions = function () {
@@ -212,10 +212,10 @@
   MatchView.prototype.render = function () {
     this.board = new BoardView(this.model.board);
     this.el = document.querySelector("#match-screen");
+    this.playSound("battle");
     this.board.render();
     this.el.className = "";
     this.updateTimer();
-    this.playSound("battle");
   };
 
   MatchView.prototype.renderScore = function (score) {
