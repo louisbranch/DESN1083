@@ -4,8 +4,8 @@
 
   var MODES = {
     easy: {width: 6, height: 4, bonusMultiplier: 1},
-    medium: {width: 6, height: 5, bonusMultiplier: 2},
-    hard: {width: 6, height: 6, bonusMultiplier: 3},
+    medium: {width: 6, height: 5, bonusMultiplier: 1.25},
+    hard: {width: 6, height: 6, bonusMultiplier: 1.5},
   };
 
   var THEMES = [
@@ -189,8 +189,8 @@
   };
 
   Match.prototype.calcularePoints = function () {
-    var hitSpeed = Math.floor((this.hits * 1000) / this.timer.ellapsed());
-    this.points += hitSpeed * this.bonusMultiplier;
+    var hitSpeed = (this.hits * 1000) / this.timer.ellapsed();
+    this.points += Math.floor(hitSpeed * this.bonusMultiplier);
   };
 
   Match.prototype.miss = function () {

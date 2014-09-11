@@ -241,7 +241,7 @@ footer .credits {
 }
 
 #score-board ol li.highlighted {
-  color: #776e65; /*FIXME*/
+  color: #f67c5f;
   font-weight: bold;
 }
 
