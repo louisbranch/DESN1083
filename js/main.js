@@ -548,11 +548,14 @@
   };
 
   ScoreBoardView.prototype.showOptions = function (newScore) {
+    var score = this.el.querySelector("#score-board-score");
     var menu = this.el.querySelector("#score-board-menu");
     var close = this.el.querySelector("#score-board-close");
     if (newScore >= 0) {
       menu.className = "btn";
       close.className = "btn hidden";
+      score.className = "";
+      score.querySelector("strong").textContent = newScore;
       this.playSound("ending");
     } else {
       menu.className = "btn hidden";

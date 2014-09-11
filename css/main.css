@@ -224,10 +224,13 @@ footer .credits {
   text-align: center;
 }
 
-#score-board-empty {
-  margin-top: 50px;
-  font-size: 20px;
+#score-board-score {
+  margin: 20px;
+  padding: 10px 0;
+  font-size: 28px;
   text-align: center;
+  background-color: #f67c5f;
+  border-radius: 10px;
 }
 
 #score-board ol {
