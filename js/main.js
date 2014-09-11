@@ -86,8 +86,7 @@
     mode = mode || "easy";
     theme = theme || "pokemon";
     var options = {
-      mode: mode,
-      size: MODES[mode],
+      mode: MODES[mode],
       theme: this.findTheme(theme)
     };
     var match = new Match(this, options);
@@ -126,9 +125,9 @@
   };
 
   GameView.prototype.bindMenuOptions = function () {
-    var opts = this.el.querySelectorAll("#game-menu-options a");
-    for (var i = 0, l = opts.length; i < l; i ++) {
-      var menu = opts[i];
+    var options = this.el.querySelectorAll("#game-menu-options a");
+    for (var i = 0, l = options.length; i < l; i ++) {
+      var menu = options[i];
       menu.onclick = view.startMatch.bind(view);
     }
   };
@@ -172,7 +171,7 @@
     this.timer = new Timer();
     this.hits = 0;
     this.points = 0;
-    this.bonusMultiplier = MODES[mode].bonusMultiplier;
+    this.bonusMultiplier = mode.bonusMultiplier;
     this.misses = 0;
     this.board = new Board(this, options);
   }
@@ -250,8 +249,8 @@
 
   function Board(match, options) {
     this.match = match;
-    this.width = options.size.width;
-    this.height = options.size.height;
+    this.width = options.mode.width;
+    this.height = options.mode.height;
     this.theme = options.theme;
     this.selected = null;
     this.needed = (this.width * this.height) / 2;
